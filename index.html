@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flatdango</title>
+    <link rel="stylesheet" href="style.css"> <!--link to style css file-->
+</head>
+<body>
+    <div class="container">
+        <header class="mt-4">
+            <h1 class="text-center">Flatdango Movie Ticket Booking</h1> <!--Heading of the web site-->
+        </header>
+
+        <!-- Movie details section -->
+        <div class="movie-details">
+            <img id="poster" class="movie-poster" src="" alt="Movie Poster">
+            <div class="movie-info">
+                <h2 id="filmTitle">Select a Movie</h2>
+                <p id="movieDescription">Please select a movie to see the details.</p>
+                <p id="runtime"></p>
+                <p id="showtime"></p>
+                <p id="ticketsAvailable"></p>
+                <button id="buyTicket" class="btn btn-primary">Buy Ticket</button>
+            </div>
+        </div>
+
+        <!-- List of movies -->
+        <div class="mt-5">
+            <h3>Now Showing</h3>
+            <ul id="showingMovie" class="list-group">
+                <!-- Movies will be dynamically populated here -->
+            </ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script> <!-- Link to  JavaScript file -->
+</body>
+</html>
