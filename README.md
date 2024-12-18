@@ -15,7 +15,7 @@ npm (Node Package Manager)
 
  ### steps
 1. Clone the repository: (git clone <<code-challenge-3>>)
-2. Install dependencies: Navigate to the project folder and install the necessary dependencies: (<npm install>)
+2. Install dependencies: Navigate to the project folder and install the necessary dependencies: (<npm install -g json-server>)  
 3. Start the JSON server: You need to have the JSON server running to serve the movie data. <<json-server --watch db.json --port 5000>>
 4. Open the application: After the server is up, open the index.html file in your browser to access the application.
 
