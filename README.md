@@ -13,7 +13,7 @@ Display "Sold Out" status when tickets are no longer available.
 Node.js
 npm (Node Package Manager)
 
- ### steps
+ ### steps for running 
 1. Clone the repository: (git clone <<code-challenge-3>>)
 2. Install dependencies: Navigate to the project folder and install the necessary dependencies: (<npm install -g json-server>)  
 3. Start the JSON server: You need to have the JSON server running to serve the movie data. <<json-server --watch db.json --port 5000>>
