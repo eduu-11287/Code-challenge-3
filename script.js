@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (tickets <= 0) {
                         availTicket.innerHTML = `Tickets Available: <span class="badge bg-danger">SOLD OUT</span>`;  // Show "SOLD OUT" badge
                         ticketBuy.innerText = "Ticket Sold Out";  // Change the button text to "Sold Out"
-                        ticketBuy.disabled = true;  // Disable the buy ticket button once sold out
+                        ticketBuy.disabled = false;  // Disable the buy ticket button once sold out
                     }
                 });
             })
