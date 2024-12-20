@@ -1,6 +1,6 @@
 # Flatdango Movie Ticket Booking
 ## Overview
-Flatdango is a simple movie ticket booking web application that allows users to view available movies, see their details, and buy tickets. The application uses a basic front-end to fetch movie data from an API and display the relevant details such as runtime, description, showtime, and ticket availability.
+Flatdango is a simple movie ticket booking web application that allows users to view available movies, see their details, and buy tickets. 
 
 ## Features
 Display a list of available movies with their titles.
@@ -16,7 +16,7 @@ npm (Node Package Manager)
  ### steps for running 
 1. Clone the repository: (git clone <<code-challenge-3>>)
 2. Install dependencies: Navigate to the project folder and install the necessary dependencies: (<npm install -g json-server>)  
-3. Start the JSON server: You need to have the JSON server running to serve the movie data. <<json-server --watch db.json --port 5000>>
+3. Start the JSON server: You need to have the JSON server running to serve the movie data. <json-server --watch db.json>
 4. Open the application: After the server is up, open the index.html file in your browser to access the application.
 
 

@@ -1,118 +1,90 @@
-const url = "http://localhost:5000/films";  // the url for json server
+let url = "http://localhost:3000/films"; //url for the local json server
+document.addEventListener('DOMContentLoaded', () => {//it waitsfor the Dom to load fully
 
-//it waits for the DOM content to be fully loaded before executing JavaScript
-document.addEventListener('DOMContentLoaded', () => {
-
+    let movieHolder = () => { //its n arrow function
+        fetch(url).then(response => response.json()) //this get request from the server then converts into json format
+        .then(array =>{
+            let movie1 = array[0];// it getsthe first element inindex 0 for the server
+            let moviePoster = document.getElementById("poster");
+            let mTitle = document.getElementById("filmTitle");
+            let mDescription = document.getElementById("description");///here we initialise the variables andassigningthem
+            let runTime = document.getElementById("movie-lenght");
+            let showTime = document.getElementById("showing-time");
+            let availableTick = document.getElementById("available-tickets");
     
-    const moviePlaceHolder = () => { //it fetch and display details of the first movie when the page loads
-        fetch(url) // Send a GET request to the server to fetch the films data
-            .then(res => res.json())  // Parse the response from JSON format to a JavaScript object
-            .then(content => {
-                const firstMovie = content[0];  // Get the first movie in the list from the fetched data
+            moviePoster.src = movie1.poster;
+            mTitle.innerHTML = movie1.title;
+            mDescription.innerHTML = movie1.description;
+            runTime.innerHTML = `Movie length: ${movie1.runtime}`;// linking the js variables with corresponding json server variables
+            showTime.innerHTML = `Showtime: ${movie1.showtime}`;
+            availableTick.innerHTML = `Available Tickets: ${movie1.capacity}`;
+    
+            let bought = document.getElementById("buyTicket");//assigninnew variable to the button in the html
+            let ticket = movie1.capacity - movie1.tickets_sold; //some calculation so that toget the available tickets
+                    bought.addEventListener('click', () => { //invocking the eventlisener toperform some task
+                if(ticket > 0) { //comparision btw the available tickes and 0
+                    ticket--; //it deducts available tickets whe one buys a ticket
+                    availableTick.innerText = `Available Tickets: ${ticket}`; //displays remaining available tickets
+                }else{
+                    availableTick.innerHTML = `Tickets Available: <span class="badge bg-danger">SOLD OUT</span>`;
+                    bought.disabled = false;
+                }
+            });
+        });
+    };
+            const movieDetails = () => { // this function displays the movies available
+                fetch(url).then(response => response.json()) // does same thingwiththe above fech url
+                .then(data => {
+                    let movieList = document.getElementById("showingMovie");//assign avariable
+                    data.forEach(items => {
+                        let mlist = document.createElement('li');//thiscreat an li element wiche is stored inmlist
+                        mlist.classList.add("group-item"); //givesthemlist a classlist
+                        mlist.setAttribute('id', `${items.id}`);//assigns themlist to an atribute
+                        mlist.innerText = items.title;
+                        movieList.appendChild(mlist);//updates the mlist
+    
+                        mlist.addEventListener('click', () =>{//adding an event listener
 
-                // Select DOM elements where movie details will be displayed
-                const filmImg = document.getElementById("poster");
-                const movieTitle = document.getElementById("filmTitle");
-                const movieDescr = document.getElementById("movieDescription");
-                const runningTime = document.getElementById("runtime");
-                const showingTime = document.getElementById("showtime");
-                const availTicket = document.getElementById("ticketsAvailable");
+                            let ticket1 = items.capacity - items.tickets_sold; //adain calculating remaining tickets
 
-                                                
-                filmImg.src = firstMovie.poster;  // assigns the poster image for the first movie
-                movieTitle.innerText = firstMovie.title;  // assigns the title of the movie
-                movieDescr.innerText = firstMovie.description;  // assignsthe description of the movie
-                runningTime.innerText = `Runtime: ${firstMovie.runtime} minutes`; //assigns Set the runtime
-                showingTime.innerText = `Showtime: ${firstMovie.showtime}`;  //assigns the showtime
-                availTicket.innerText = `Tickets Available: (${firstMovie.capacity - firstMovie.tickets_sold})`;  //  available tickets
+                            let moviePoster = document.getElementById("poster");
+                            let movieTitle = document.getElementById("filmTitle");
+                            let movieDescription = document.getElementById("description");//here we also initialise the variables andassigningthem
+                            let runningTime = document.getElementById("movie-lenght");
+                            let showingTime = document.getElementById("showing-time");
+                            let availableTicks = document.getElementById("available-tickets");
+            
+                            moviePoster.src = items.poster;
+                            movieTitle.innerText = items.title;
+                            movieDescription.innerText = items.description;
+                            runningTime.innerHTML = `Runtime: ${items.runtime}`;//assigning variables to their corresponding value
+                            showingTime.innerText = `Showtime:  ${items.showtime}`;
+                            availableTicks.innerText = `Available Tickets: ${ticket1}`;
+                            
+                            let buy = document.getElementById("buyTicket");
+                            buy.innerHTML = `buy Tickets`;
 
-                // Select the "Buy Ticket" button and calculate the available tickets
-                const ticketBuy = document.getElementById("buyTicket");
-                let tickets = firstMovie.capacity - firstMovie.tickets_sold;  // Calculate available tickets
+                          buy.addEventListener('click',() => {
+                                if(ticket1 > 0) { //comparison 
+                                    ticket1--;// it decreases the nuber of tickets when someone buys a ticket
+                                    availableTicks.innerText = `Available Tickets: ${ticket1}`;
+                                }
 
-                // Adds event listener to the "Buy Ticket" button
-                ticketBuy.addEventListener('click', () => {
-                    if (tickets > 0) {
-                        tickets--;  // decreases the  available tickets by 1 when the button is clicked
-                        availTicket.innerText = `Tickets Available: (${tickets})`;  // Updates the available tickets in the DOM
-                    }
+                                if(ticket1 <= 0) {
+                                    availableTicks.innerHTML = `Tickets Available: <span class="badge bg-danger">SOLD OUT</span>`;
+                                    buy.disabled = true;
+                                }
+                            });
 
-                    // If tickets run out, mark the movie as "Sold Out"
-                    if (tickets <= 0) {
-                        availTicket.innerHTML = `Tickets Available: <span class="badge bg-danger">SOLD OUT</span>`;  // Show "SOLD OUT" badge
-                        ticketBuy.innerText = "Ticket Sold Out";  // Changes the button text to "Sold Out"
-                        ticketBuy.disabled = true;  // Disables the buy ticket button once sold out
-                    }
-                });
-            })
-            .catch(error => console.error('Error fetching data:', error));  //it log any errors that occur during the fetch operation
-    }
 
-    // Fetch and display the list of all movies in the menu
-    const movieDetails = () => {
-        fetch(url)  // Send a GET request to fetch all movie data
-            .then(response => response.json())  // Parse the response to JSON
-            .then(data => {
-                const list = document.getElementById("showingMovie");  // Get the list container from the DOM
-
-                // Iterate over the data (which contains all the movies)
-                data.forEach(item => {
-                    // Create a list item for each movie and add necessary classes
-                    const movieList = document.createElement("li");
-                    movieList.classList.add("list-group-item", "border", "border-info", "sinema");  // Add Bootstrap classes for styling
-                    movieList.setAttribute('id', `${item.id}`);  // Set a unique id for each list item (based on movie id)
-                    movieList.innerText = item.title;  // Set the title of the movie as the text for the list item
-
-                    // Append the created list item to the showingMovie container in the DOM
-                    list.appendChild(movieList);
-
-                    // Add an event listener to the list item to show the movie's details when clicked
-                    movieList.addEventListener('click', () => {
-                        const filmImage = document.getElementById("poster");
-                        const filmTitle = document.getElementById("filmTitle");
-                        const filmDescr = document.getElementById("movieDescription");
-                        const runTime = document.getElementById("runtime");
-                        const showTime = document.getElementById("showtime");
-                        const availTickets = document.getElementById("ticketsAvailable");
-
-                        // Update the movie details in the DOM based on the selected movie item
-                        filmImage.src = item.poster;
-                        filmTitle.innerText = item.title;
-                        filmDescr.innerText = item.description;
-                        runTime.innerHTML = `Runtime: <span>${item.runtime}</span>`;
-                        showTime.innerText = `Showtime: ${item.showtime}`;
-                        availTickets.innerText = `Tickets Available: (${item.capacity - item.tickets_sold})`;
-
-                        // it Handle the "Buy Ticket" button for each movie
-                        const ticketsBuy = document.getElementById("buyTicket");
-                        let ticket = item.capacity - item.tickets_sold;  // Get the number of available tickets for this movie
-
-                        // Reset the Buy Ticket button state and update available tickets
-                        ticketsBuy.innerText = "Buy Ticket";
-                        availTickets.innerHTML = `Tickets Available: (${ticket})`;
-
-                        // Add event listener to the "Buy Ticket" button for this specific movie
-                        ticketsBuy.addEventListener('click', () => {
-                            if (ticket > 0) {
-                                ticket--;  // Decrease available tickets when clicked
-                                availTickets.innerText = `Tickets Available: (${ticket})`;  // Update available tickets in the DOM
-                            }
-
-                            // If tickets run out, mark the movie as "Sold Out"
-                            if (ticket <= 0) {
-                                availTickets.innerHTML = `Tickets Available: <span class="badge bg-danger">SOLD OUT</span>`;  // Show "SOLD OUT" badge
-                                ticketsBuy.innerText = "Sold Out";  // Disable the buy button once sold out
-                                ticketsBuy.disabled = true;  // Disable the button
-                            }
+            
                         });
                     });
                 });
-            })
-            .catch(error => console.error('Error fetching data:', error));  // Log any errors that occur during the fetch operation
-    }
+            };
+            movieDetails();
+            movieHolder();
+        });
+        
 
-    // Initial function calls to fetch and display all movies and details of the first movie
-    movieDetails();  // Display the list of all movies in the menu
-    moviePlaceHolder();  // Display details of the first movie when the page loads
 
-});
